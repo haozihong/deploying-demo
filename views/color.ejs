@@ -1,0 +1,91 @@
+<h1>
+	Convert to Munsell
+</h1>
+
+<form class="" action="/color-convert/" method="GET">
+	<div class="form-group">
+		<label class="lead" for="ori_clr">Hex value:</label>
+		<input class="form-control" id="ori_clr" type="text" name="ori_clr" placeholder="HEX">
+		<label for="digits">Digits (>= 0):</label>
+		<input type="number" id="digits" name="digits" min="0" value="1">
+	</div>
+	
+	<input type="hidden" name="mode" value="hex_to_munsell">
+	
+	<button class="btn btn-primary btn-lg">
+		Convert
+	</button>
+</form>
+
+<form class="" action="/color-convert/" method="GET">
+	<div class="form-group">
+		<label class="lead" for="ori_clr">RGB255 value:</label>
+		<input class="form-control" id="ori_clr_r" type="text" name="ori_clr_r" placeholder="R (0~255)">
+		<input class="form-control" id="ori_clr_g" type="text" name="ori_clr_g" placeholder="G (0~255)">
+		<input class="form-control" id="ori_clr_b" type="text" name="ori_clr_b" placeholder="B (0~255)">
+		<label for="digits">Digits (>= 0):</label>
+		<input type="number" id="digits" name="digits" min="0" value="1">
+	</div>
+	
+	<input type="hidden" name="mode" value="rgb255_to_munsell">
+	
+	<button class="btn btn-primary btn-lg">
+		Convert
+	</button>
+</form>
+
+<form class="" action="/color-convert/" method="GET">
+	<div class="form-group">
+		<label class="lead" for="ori_clr">RGB(0~1) value:</label>
+		<input class="form-control" id="ori_clr_r" type="text" name="ori_clr_r" placeholder="R (0~1)">
+		<input class="form-control" id="ori_clr_g" type="text" name="ori_clr_g" placeholder="G (0~1)">
+		<input class="form-control" id="ori_clr_b" type="text" name="ori_clr_b" placeholder="B (0~1)">
+		<label for="digits">Digits (>= 0):</label>
+		<input type="number" id="digits" name="digits" min="0" value="1">
+	</div>
+	
+	<input type="hidden" name="mode" value="rgb_to_munsell">
+	
+	<button class="btn btn-primary btn-lg">
+		Convert
+	</button>
+</form>
+
+<br><br>
+<% if (result) { %>
+	<textarea rows="10" cols="50" style="display: none;">
+	<%= JSON.stringify(result) %>
+	</textarea>
+	<table border="1">
+		<thead></thead>
+		<tbody>
+			<tr>
+				<td>From: <%= result.ori_sys %></td>
+				<td>
+					<%= result.ori_clr %>
+					<span style="background-color: <%= result.ori_css_clr %>;">_______</span>
+				</td>
+			</tr>
+			<tr>
+				<td>To: <%= result.convert_sys %></td>
+				<td>
+					<%= result.convert_clr %>
+					<span style="background-color: <%= result.hex_back %>;">_______</span>
+				</td>
+			</tr>
+			<tr>
+				<td>Color back</td>
+				<td><%= result.convert_back %></td>
+			</tr>
+			<tr>
+				<td>RGB255 back</td>
+				<td><%= result.rgb255_back %></td>
+			</tr>
+			<tr style="display: none;">
+				<td>RGB back</td>
+				<td><%= result.rgb_back %></td>
+			</tr>
+		</tbody>
+	</table>
+
+<% } %>
