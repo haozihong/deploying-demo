@@ -14,48 +14,6 @@ app.get("/about", (req, res) => {
 	res.render("about");
 });
 
-app.get("/api/color/hex-to-munsell/:clr", (req, res) => {
-	let hex = "#"+req.params.clr;
-	let digits = 1;
-	if (req.query.digits) digits = req.query.digits;
-	let conver = munsell.hexToMunsell(hex, undefined, digits);
-	let rgbBack = munsell.munsellToRgb(conver);
-	let hexBack = munsell.munsellToHex(conver);
-	console.log(conver);
-	res.status(200).json({
-		ori_hex: hex,
-		digits: digits,
-		munsell : conver,
-		rgb_back: rgbBack,
-		hex_back: hexBack
-	});
-});
-
-app.get("/color/hex-to-munsell/:clr", (req, res) => {
-	let hex = "#"+req.params.clr;
-	let digits = 1;
-	if (req.query.digits) digits = req.query.digits;
-	let conver = munsell.hexToMunsell(hex, undefined, digits);
-	let rgbBack = munsell.munsellToRgb(conver);
-	let hexBack = munsell.munsellToHex(conver);
-	console.log(conver);
-	result = {
-		ori_hex: hex,
-		digits: digits,
-		munsell : conver,
-		rgb_back: rgbBack,
-		hex_back: hexBack
-	};
-	res.render("color", { result: result });
-	// res.status(200).json({
-	// 	ori_hex: hex,
-	// 	digits: digits,
-	// 	munsell : conver,
-	// 	rgb_back: rgbBack,
-	// 	hex_back: hexBack
-	// });
-});
-
 app.get("/color-convert", (req, res) => {
 	console.log(req.query);
 	let result = null;
@@ -67,12 +25,18 @@ app.get("/color-convert", (req, res) => {
 				oriClr = "#"+req.query.ori_clr;
 				oriCSSClr = oriClr;
 				digits = req.query.digits || 1;
-				convert = munsell.hexToMunsell(oriClr, undefined, digits);
+        try {
+				  convert = munsell.hexToMunsell(oriClr, undefined, digits);
+          
+        } catch (error) {
+          console.error(error);
+          res.redirect("/color-convert");
+        }
 				clrBack = munsell.munsellToHex(convert);
 				break;
 			case "rgb255_to_munsell":
 				oriSys = "rgb255";
-				oriClr = [Number(req.query.ori_clr_r), Number(req.query.ori_clr_g), Number(req.query.ori_clr_b)];
+				oriClr = [Number(req.query.ori_clr_r255), Number(req.query.ori_clr_g255), Number(req.query.ori_clr_b255)];
 				oriCSSClr = `rgb(${oriClr})`;
 				digits = req.query.digits || 1;
 				convert = munsell.rgb255ToMunsell(oriClr[0], oriClr[1], oriClr[2], undefined, digits);
